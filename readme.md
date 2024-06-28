@@ -41,11 +41,12 @@ A suitable function for generating rook moves might be:
 // untested, probably works
 fn rook_moves(square: usize, friends: u64, enemies: u64) -> u64
 {
-    ROOK_ATTACKS[square][(((
+    ROOK_ATTACKS[square][((((
            (friends | enemies)
+        &  ROOK_MASKS [square])
         *  ROOK_MAGICS[square])
         >> ROOK_SHIFTS[square])
-        &  ROOK_MASKS [square])
+        &  ROOK_BITS  [square])
         as usize]
         & !friends
 }

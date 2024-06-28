@@ -55,6 +55,9 @@ fn main()
     let mut rook_masks  = [0u64; 64];
     let mut bish_masks  = [0u64; 64];
 
+    let mut rook_bits   = [0u64; 64];
+    let mut bish_bits   = [0u64; 64];
+
     let mut rook_attacks = vec_arr();
     let mut bish_attacks = vec_arr();
 
@@ -88,7 +91,8 @@ fn main()
                         eprintln!("found in {} attempts", i);
                         rook_magics [square as usize] = magic;
                         rook_shifts [square as usize] = shift;
-                        rook_masks  [square as usize] = 2u64.pow(bits) - 1;
+                        rook_masks  [square as usize] = rook;
+                        rook_bits   [square as usize] = 2u64.pow(bits) - 1;
                         rook_attacks[square as usize] = attacks;
                         continue 'square;
                     }
@@ -102,7 +106,8 @@ fn main()
                             eprintln!("found (+1 bit) in {} attempts", i);
                             rook_magics [square as usize] = magic;
                             rook_shifts [square as usize] = shift;
-                            rook_masks  [square as usize] = 2u64.pow(bits) - 1;
+                            rook_masks  [square as usize] = rook;
+                            rook_bits   [square as usize] = 2u64.pow(bits) - 1;
                             rook_attacks[square as usize] = attacks;
                             continue 'square;
                         }
@@ -142,7 +147,8 @@ fn main()
                         eprintln!("found in {} attempts", i);
                         bish_magics [square as usize] = magic;
                         bish_shifts [square as usize] = shift;
-                        bish_masks  [square as usize] = 2u64.pow(bits) - 1;
+                        bish_masks  [square as usize] = bish;
+                        bish_bits   [square as usize] = 2u64.pow(bits) - 1;
                         bish_attacks[square as usize] = attacks;
                         continue 'square;
                     }
@@ -156,7 +162,8 @@ fn main()
                             eprintln!("found (+1 bit) in {} attempts", i);
                             bish_magics [square as usize] = magic;
                             bish_shifts [square as usize] = shift;
-                            bish_masks  [square as usize] = 2u64.pow(bits) - 1;
+                            bish_masks  [square as usize] = bish;
+                            bish_bits   [square as usize] = 2u64.pow(bits) - 1;
                             bish_attacks[square as usize] = attacks;
                             continue 'square;
                         }
@@ -171,6 +178,7 @@ fn main()
     eprintln!("found all magics. writing to stdout now...");
 
     println!("// auto-generated");
+    println!();
     // rook magics, shifts, and masks
     println!("pub static ROOK_MAGICS: [u64; 64] = [");
     for square in 0..64
@@ -190,6 +198,12 @@ fn main()
     for square in 0..64
     {
         println!("    0x{:x},", rook_masks[square]);
+    }
+    println!("];");
+    println!("pub static ROOK_BITS: [u64; 64] = [");
+    for square in 0..64
+    {
+        println!("    0x{:x},", rook_bits[square]);
     }
     println!("];");
     println!();
@@ -219,6 +233,12 @@ fn main()
     for square in 0..64
     {
         println!("    0x{:x},", bish_masks[square]);
+    }
+    println!("];");
+    println!("pub static BISHOP_BITS: [u64; 64] = [");
+    for square in 0..64
+    {
+        println!("    0x{:x},", bish_bits[square]);
     }
     println!("];");
     println!();
