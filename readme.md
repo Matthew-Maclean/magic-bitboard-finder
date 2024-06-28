@@ -39,7 +39,7 @@ A suitable function for generating rook moves might be:
 
 ```rust
 // untested, probably works
-fn rook_moves(square: usize, friends: u8, enemies: u8) -> u64
+fn rook_moves(square: usize, friends: u64, enemies: u64) -> u64
 {
     ROOK_ATTACKS[square][(((
            (friends | enemies)
