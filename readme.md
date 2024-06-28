@@ -32,3 +32,27 @@ will be printed to stdout.
 
 You can just take this file and use it if you don't want to make your own magic
 numbers. In the example, only rook f8 required an extra bit to be found.
+
+## Use of the output
+
+A suitable function for generating rook moves might be:
+
+```rust
+// untested, probably works
+fn rook_moves(square: usize, friends: u8, enemies: u8) -> u64
+{
+    ROOK_ATTACKS[square][(((
+           (friends | enemies)
+        *  ROOK_MAGICS[square])
+        >> ROOK_SHIFTS[square])
+        &  ROOK_MASKS [square])
+        as usize]
+        & !friends
+}
+```
+
+The above probably won't work in rust's `debug` mode, due to the wrapping
+multiplication. It should work no problem in `release` mode, though.
+
+Another of a similar form would be made for bishops. Queen moves are simply
+`rook_moves | bishop_moves`.
